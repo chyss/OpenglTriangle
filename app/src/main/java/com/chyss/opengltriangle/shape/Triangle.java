@@ -1,7 +1,9 @@
-package com.chyss.opengltriangle;
+package com.chyss.opengltriangle.shape;
 
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+
+import com.chyss.opengltriangle.utils.BufferUtil;
 
 import java.nio.FloatBuffer;
 
@@ -11,8 +13,7 @@ import javax.microedition.khronos.opengles.GL10;
 /**
  * @author chyss 2017-05-23
  */
-
-public class Triangle implements GLSurfaceView.Renderer
+public class Triangle extends Shape
 {
     //gl_Position : 输出属性-变换后的顶点的位置，用于后面的固定的裁剪等操作。所有的顶点着色器都必须写这个值。
     private static final String vertexShaderCode =
@@ -104,9 +105,12 @@ public class Triangle implements GLSurfaceView.Renderer
         GLES20.glEnableVertexAttribArray(positionHandle);
 
         //准备三角形的坐标数据
-        GLES20.glVertexAttribPointer(positionHandle, 3,
-                GLES20.GL_FLOAT, false,
-                3 * 4, vertexBuffer);
+        GLES20.glVertexAttribPointer(positionHandle,  //变量的内存位置
+                3,                      //每一个坐标的数据个数
+                GLES20.GL_FLOAT,        //数据的类型
+                false,                  //converted to a range from -1 to 1 for signed data, or 0 to 1 for unsigned data
+                3 * 4,                  //the spacing between elements,每个顶点占用的空间
+                vertexBuffer);         //the array containing the data,顶点缓冲数组
 
         // 获取指向fragment shader的成员vColor的handle
         colorHandle = GLES20.glGetUniformLocation(program, "vColor");
@@ -123,16 +127,5 @@ public class Triangle implements GLSurfaceView.Renderer
 
         // 禁用指向三角形的顶点数组
         GLES20.glDisableVertexAttribArray(positionHandle);
-    }
-
-    public static int loadShader(int type, String shaderCode){
-        //vertex shader类型(GLES20.GL_VERTEX_SHADER)或fragment shader类型(GLES20.GL_FRAGMENT_SHADER)
-        int shader = GLES20.glCreateShader(type);
-
-        // 将源码添加到shader并编译它
-        GLES20.glShaderSource(shader, shaderCode);
-        GLES20.glCompileShader(shader);
-
-        return shader;
     }
 }

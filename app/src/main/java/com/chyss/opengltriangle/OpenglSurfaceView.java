@@ -18,16 +18,35 @@ package com.chyss.opengltriangle;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 
+import com.chyss.opengltriangle.shape.Cube;
+import com.chyss.opengltriangle.shape.Triangle;
+
+
 public class OpenglSurfaceView extends GLSurfaceView {
 
-    public OpenglSurfaceView(Context context) {
-        super(context);
+    Renderer render;
 
+    public OpenglSurfaceView(Context context,int type) {
+        super(context);
+        init(type);
+    }
+
+    private void init(int type)
+    {
         // 使用OpenGLES 2.0
         setEGLContextClientVersion(2);
 
         // 设置Renderer到GLSurfaceView
-        setRenderer(new Triangle());
+        switch (type)
+        {
+            case 1:
+                render = new Triangle();
+                break;
+            case 2:
+                render = new Cube(this);
+                break;
+        }
+        setRenderer(render);
 
         // render模式为只在绘制数据发生改变时才绘制view,此设置会阻止绘制GLSurfaceView的帧，直到你调用了requestRender().
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);

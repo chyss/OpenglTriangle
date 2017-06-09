@@ -1,4 +1,6 @@
-package com.chyss.opengltriangle;
+package com.chyss.opengltriangle.utils;
+
+import android.opengl.GLES20;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -7,6 +9,7 @@ import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
 /**
+ * 创建缓冲区
  * @author chyss 2017-05-22
  */
 
